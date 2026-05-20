@@ -1,0 +1,107 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "enterprise-ops-assistant"
+version = "1.0.0"
+description = "Enterprise Intelligent Ops Assistant Based on Hybrid RAG"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "AI Architecture Team" },
+]
+keywords = ["rag", "ops", "ai", "knowledge-base", "hybrid-retrieval"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    # FastAPI & Server
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "python-multipart>=0.0.6",
+    "pydantic>=2.5.3",
+    "pydantic-settings>=2.1.0",
+
+    # LangChain
+    "langchain>=0.1.4",
+    "langchain-core>=0.1.18",
+    "langchain-community>=0.0.16",
+    "langchain-text-splitters>=0.0.1",
+
+    # Embeddings & Rerank
+    "sentence-transformers>=2.3.1",
+    "transformers>=4.37.0",
+    "torch>=2.1.2",
+
+    # Vector Stores
+    "chromadb>=0.4.22",
+    "pymilvus>=2.3.6",
+
+    # BM25
+    "rank-bm25>=0.2.2",
+    "jieba>=0.42.1",
+
+    # Document Loaders
+    "pypdf>=3.17.1",
+    "python-docx>=1.1.0",
+    "unstructured>=0.12.0",
+    "markdown>=3.5.1",
+
+    # Database
+    "pymysql>=1.1.0",
+    "sqlalchemy>=2.0.25",
+    "alembic>=1.13.1",
+
+    # LLM
+    "openai>=1.12.0",
+    "dashscope>=1.14.0",
+
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "loguru>=0.7.2",
+    "httpx>=0.26.0",
+    "numpy>=1.26.3",
+    "tiktoken>=0.5.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.4",
+    "pytest-asyncio>=0.23.3",
+    "pytest-cov>=4.1.0",
+    "black>=24.1.0",
+    "isort>=5.13.2",
+    "mypy>=1.8.0",
+    "ruff>=0.1.11",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311", "py312"]
+
+[tool.isort]
+profile = "black"
+known_first_party = ["backend"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

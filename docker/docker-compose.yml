@@ -1,0 +1,130 @@
+# Docker Compose for Enterprise Ops Assistant
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    container_name: ops-assistant-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../knowledge_base:/app/knowledge_base
+      - ../logs:/app/logs
+      - ../chroma_db:/app/chroma_db
+    environment:
+      - APP_NAME=Enterprise Ops Assistant
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=${DB_PASSWORD:-ops_password}
+      - DB_NAME=ops_assistant
+      - VECTOR_STORE_TYPE=chroma
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - EMBEDDING_MODEL=BAAI/bge-m3
+      - EMBEDDING_DEVICE=cpu
+      - RERANK_MODEL=BAAI/bge-reranker-v2-m3
+      - RERANK_DEVICE=cpu
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4-turbo}
+      - CORS_ORIGINS=["http://localhost:8501","http://localhost:3000"]
+    depends_on:
+      - mysql
+      - chromadb
+    restart: unless-stopped
+    networks:
+      - ops-network
+
+  # Frontend
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    container_name: ops-assistant-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000/api/v1
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - ops-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: ops-assistant-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-ops_password}
+      - MYSQL_DATABASE=ops_assistant
+      - MYSQL_CHARACTER_SET_SERVER=utf8mb4
+      - MYSQL_COLLATION_SERVER=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - ops-network
+
+  # ChromaDB Vector Store
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: ops-assistant-chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+    restart: unless-stopped
+    networks:
+      - ops-network
+
+  # Redis (Optional - for caching)
+  redis:
+    image: redis:7-alpine
+    container_name: ops-assistant-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - ops-network
+
+  # Nginx (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: ops-assistant-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+    networks:
+      - ops-network
+
+volumes:
+  mysql_data:
+  chroma_data:
+  redis_data:
+
+networks:
+  ops-network:
+    driver: bridge

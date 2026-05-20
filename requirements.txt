@@ -1,0 +1,35 @@
+# FastAPI & Server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.6
+pydantic>=2.5.3
+pydantic-settings>=2.1.0
+
+# Embeddings & Rerank
+sentence-transformers>=2.3.1
+transformers>=4.37.0
+torch>=2.1.2
+
+# Vector Stores
+chromadb>=0.4.22
+
+# BM25
+rank-bm25>=0.2.2
+jieba>=0.42.1
+
+# Document Loaders
+pypdf>=3.17.1
+python-docx>=1.1.0
+
+# LLM
+openai>=1.12.0
+
+# Utilities
+python-dotenv>=1.0.0
+loguru>=0.7.2
+httpx>=0.26.0
+numpy>=1.26.3
+requests>=2.31.0
+
+# Frontend
+streamlit>=1.30.0
