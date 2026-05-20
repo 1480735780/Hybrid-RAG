@@ -333,6 +333,8 @@ RAG_Agent_Project/
 
 # ⭐ Star History
 
+
+[![Star History Chart](https://api.star-history.com/svg?repos=1480735780/Hybrid-RAG&type=Date)](https://star-history.com/#1480735780/Hybrid-RAG&Date)
 如果这个项目对你有帮助，欢迎 Star ⭐
 
 ---
