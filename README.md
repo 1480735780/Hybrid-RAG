@@ -5,6 +5,16 @@
 
 ---
 
+## 🔗 在线体验
+
+| 平台 | 链接 |
+|------|------|
+| **Demo** | [https://hybrid-rag-bwavseqimnwazuxtwoqrm9.streamlit.app](https://hybrid-rag-bwavseqimnwazuxtwoqrm9.streamlit.app) |
+| **GitHub** | [https://github.com/1480735780/-Hybrid-RAG-](https://github.com/1480735780/-Hybrid-RAG-) |
+| **Gitee** | [https://gitee.com/Easonlu01/hybrid-rag](https://gitee.com/Easonlu01/hybrid-rag) |
+
+---
+
 ## 📌 Project Introduction
 
 本项目聚焦于企业运维场景，构建了一套基于 **Hybrid RAG（Retrieval-Augmented Generation）** 的智能运维知识库平台，用于解决传统运维场景中：
@@ -25,6 +35,21 @@
 * Kubernetes 问题定位
 * Nginx 日志分析
 * 企业内部知识问答
+
+---
+
+## 📸 项目截图
+
+### 智能问答界面
+![Chat Interface](screenshots/image.png)
+
+### 文档上传界面
+![Upload Interface](screenshots/image1.png)
+
+### 知识库管理
+![Knowledge Base](screenshots/image2.png)
+
+---
 
 用户输入报错日志、异常信息或运维问题后，系统能够：
 
