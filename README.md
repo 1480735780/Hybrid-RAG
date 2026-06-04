@@ -314,9 +314,9 @@ RAG_Agent_Project/
 
 ## Phase 2 — Enterprise Retrieval
 
-* [ ] Hybrid Retrieval
-* [ ] Rerank Optimization
-* [ ] Query Rewrite
+* [x] Hybrid Retrieval
+* [x] Rerank Optimization
+* [x] Query Rewrite
 
 ---
 
